@@ -2,7 +2,10 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 const fetchSpankbang = async (req, res) => {
-  const url = "https://spankbang.com/upcoming/";
+  const url = req.body.url;
+
+  if (!url) return res.status(404).json({ message: "Require url" });
+
   const result = await axios.get(url);
   const $ = cheerio.load(result.data);
   let arr = [];
@@ -53,7 +56,11 @@ const fetchSpankbang = async (req, res) => {
 };
 
 const fetchAsiaLeak = async (req, res) => {
-  const result = await axios.get("https://asianleak.com/latest-updates/1/");
+  const url = req.body.url;
+
+  if (!url) return res.status(404).json({ message: "Require url" });
+
+  const result = await axios.get(url);
   const $ = cheerio.load(result.data);
   let arr = [];
 
@@ -73,9 +80,10 @@ const fetchAsiaLeak = async (req, res) => {
     const duration = $(element)
       .children("a")
       .children(".wrap")
-      .children(".duration");
+      .children(".duration")
+      .text();
 
-    arr.push({ title, link, thumbnail, preview });
+    arr.push({ title, link, thumbnail, preview, duration });
   });
 
   res.status(200).json({
@@ -86,4 +94,39 @@ const fetchAsiaLeak = async (req, res) => {
   });
 };
 
-module.exports = { fetchSpankbang, fetchAsiaLeak };
+const fetchMediafire = async (req, res) => {
+  const url = req.body.url;
+
+  if (!url) return res.status(404).json({ message: "Require url" });
+
+  const result = await axios.get(url);
+  const $ = cheerio.load(result.data);
+
+  const link = $(".popsok").attr("href");
+
+  return res.status(200).json({
+    link,
+  });
+};
+
+const fetchGoogleDrive = async (req, res) => {
+  const url = req.body.url;
+
+  if (!url) return res.status(404).json({ message: "Require url" });
+
+  const result = await axios.get(url);
+  const $ = cheerio.load(result.data);
+
+  const link = $("#downloadForm").attr("action");
+
+  return res.status(200).json({
+    link,
+  });
+};
+
+module.exports = {
+  fetchSpankbang,
+  fetchAsiaLeak,
+  fetchMediafire,
+  fetchGoogleDrive,
+};
