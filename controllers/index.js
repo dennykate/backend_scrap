@@ -103,9 +103,14 @@ const fetchMediafire = async (req, res) => {
   const $ = cheerio.load(result.data);
 
   const link = $(".popsok").attr("href");
+  const title = $(".filename").text().split(".")[0];
+  const size =
+    $(".details").children("li").children("span").text().split("B")[0] + "B";
 
   return res.status(200).json({
     link,
+    title,
+    size,
   });
 };
 
@@ -118,9 +123,11 @@ const fetchGoogleDrive = async (req, res) => {
   const $ = cheerio.load(result.data);
 
   const link = $("#downloadForm").attr("action");
+  const title = $(".uc-name-size").text();
 
   return res.status(200).json({
     link,
+    title,
   });
 };
 
