@@ -140,11 +140,9 @@ const fetchRacaty = async (req, res) => {
   const $ = cheerio.load(result.data);
 
   const link = $("source").attr("src");
-  const title = "---";
 
   return res.status(200).json({
     link,
-    title,
   });
 };
 
