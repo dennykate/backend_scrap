@@ -131,9 +131,27 @@ const fetchGoogleDrive = async (req, res) => {
   });
 };
 
+const fetchRacaty = async (req, res) => {
+  const url = req.body.url;
+
+  if (!url) return res.status(404).json({ message: "Require url" });
+
+  const result = await axios.get(url);
+  const $ = cheerio.load(result.data);
+
+  const link = $("source").attr("src");
+  const title = "---";
+
+  return res.status(200).json({
+    link,
+    title,
+  });
+};
+
 module.exports = {
   fetchSpankbang,
   fetchAsiaLeak,
   fetchMediafire,
   fetchGoogleDrive,
+  fetchRacaty,
 };
