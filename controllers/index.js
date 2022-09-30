@@ -132,7 +132,7 @@ const fetchGoogleDrive = async (req, res) => {
 };
 
 const fetchRacaty = async (req, res) => {
-  const url = req.body.url;
+  const url = "https://racaty.net/embed-9mjckybt9js1.html";
 
   if (!url) return res.status(404).json({ message: "Require url" });
 
