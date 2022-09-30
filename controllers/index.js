@@ -131,25 +131,9 @@ const fetchGoogleDrive = async (req, res) => {
   });
 };
 
-const fetchRacaty = async (req, res) => {
-  const url = "https://racaty.net/embed-9mjckybt9js1.html";
-
-  if (!url) return res.status(404).json({ message: "Require url" });
-
-  const result = await axios.get(url);
-  const $ = cheerio.load(result.data);
-
-  const link = $("source").attr("src");
-
-  return res.status(200).json({
-    link,
-  });
-};
-
 module.exports = {
   fetchSpankbang,
   fetchAsiaLeak,
   fetchMediafire,
   fetchGoogleDrive,
-  fetchRacaty,
 };
