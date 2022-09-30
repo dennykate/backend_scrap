@@ -13,6 +13,10 @@ app.use(cors());
 
 app.use("/", routes);
 
+app.get("/", (req, res) => {
+  return res.send("Sever started");
+});
+
 app.listen(5000, () => {
   console.log("Sever listening at port 5000");
 });
